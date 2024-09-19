@@ -1,10 +1,10 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from jose import ExpiredSignatureError, JWTError, jwt
 
 from core.config import config
 from core.exceptions import CustomException
-
+from core.utils import utcnow
 
 class JWTDecodeError(CustomException):
     code = 401
@@ -23,7 +23,7 @@ class JWTHandler:
 
     @staticmethod
     def encode(payload: dict) -> str:
-        expire = datetime.utcnow() + timedelta(minutes=JWTHandler.expire_minutes)
+        expire = utcnow() + timedelta(minutes=JWTHandler.expire_minutes)
         payload.update({"exp": expire})
         return jwt.encode(
             payload, JWTHandler.secret_key, algorithm=JWTHandler.algorithm

@@ -1,10 +1,11 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from unittest.mock import MagicMock, patch
 
 import pytest
 from jose import JWTError, jwt
 
 from core.security.jwt import JWTDecodeError, JWTHandler
+from core.utils import utcnow
 
 
 class MockConfig:
@@ -25,7 +26,7 @@ def mock_payload():
 
 @pytest.fixture
 def mock_token(mock_payload, mock_config):
-    expire = datetime.utcnow() + timedelta(minutes=mock_config.JWT_EXPIRE_MINUTES)
+    expire = utcnow() + timedelta(minutes=mock_config.JWT_EXPIRE_MINUTES)
     payload = mock_payload.copy()
     payload.update({"exp": expire})
     return jwt.encode(
@@ -36,7 +37,7 @@ def mock_token(mock_payload, mock_config):
 @pytest.fixture
 def mock_expired_token(mock_payload, mock_config):
     expire = (
-        datetime.utcnow()
+        utcnow()
         - timedelta(minutes=mock_config.JWT_EXPIRE_MINUTES)
         - timedelta(seconds=10)
     )
