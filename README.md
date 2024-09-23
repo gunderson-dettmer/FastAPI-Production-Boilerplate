@@ -217,7 +217,7 @@ To facilitate easier access to queries with complex joins, the `BaseRepository` 
 
 ```python
 async def get_user_by_email_join_tasks(email: str):
-    query = await self._query(join_)
+    query = self._query(join_)
     query = query.filter(User.email == email)
     return await self._one_or_none(query)
 ```

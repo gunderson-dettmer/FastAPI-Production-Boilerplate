@@ -1,8 +1,6 @@
-version: "3.4"
-
 services:
   postgresql:
-    image: postgres:14.2-alpine
+    image: postgres:16-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password123
@@ -10,10 +8,10 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - pg16-data:/var/lib/postgresql/data:cached
 
   postgresql-test:
-    image: postgres:14.2-alpine
+    image: postgres:16-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password123
@@ -21,7 +19,7 @@ services:
     ports:
       - "5431:5432"
     volumes:
-      - ./postgresql-test:/var/lib/postgresql/data
+      - pg16-data-test:/var/lib/postgresql/data:cached
 
   redis:
     image: redis:6.2.7
@@ -40,3 +38,5 @@ services:
 
 volumes:
   redis:
+  pg16-data:
+  pg16-data-test:
